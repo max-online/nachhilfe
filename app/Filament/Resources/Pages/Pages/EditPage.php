@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Pages\Pages;
 
 use App\Filament\Resources\Pages\PageResource;
+use App\Models\Page;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 
@@ -15,7 +16,7 @@ class EditPage extends EditRecord
         return [
             Action::make('preview')
                 ->label('Seite ansehen')
-                ->url(route('home'))
+                ->url(fn (Page $record): string => route($record->slug))
                 ->openUrlInNewTab(),
         ];
     }

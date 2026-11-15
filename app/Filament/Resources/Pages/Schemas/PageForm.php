@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Pages\Schemas;
 
+use App\Models\Page;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -17,6 +19,7 @@ class PageForm
         return $schema
             ->components([
                 Tabs::make('Inhalt')
+                    ->visible(fn (?Page $record): bool => $record?->isHomepage() ?? false)
                     ->columnSpanFull()
                     ->persistTabInQueryString()
                     ->tabs([
@@ -141,9 +144,10 @@ class PageForm
                             ]),
                         Tab::make('Über uns')
                             ->schema([
-                                TextInput::make('content.about.highlight')
-                                    ->label('Große Zahl')
-                                    ->required(),
+                                TextInput::make('content.about.eyebrow')
+                                    ->label('Überzeile'),
+                                TextInput::make('content.about.title')
+                                    ->label('Überschrift'),
                                 Textarea::make('content.about.text')
                                     ->label('Text')
                                     ->rows(3)
@@ -171,6 +175,22 @@ class PageForm
                                     ->required(),
                             ]),
                     ]),
+                TextInput::make('title')
+                    ->label('Überschrift')
+                    ->required()
+                    ->columnSpanFull()
+                    ->hidden(fn (?Page $record): bool => $record?->isHomepage() ?? true),
+                RichEditor::make('content.body')
+                    ->label('Text')
+                    ->required()
+                    ->columnSpanFull()
+                    ->toolbarButtons([
+                        ['bold', 'italic', 'underline', 'link'],
+                        ['h2', 'h3', 'h4'],
+                        ['bulletList', 'orderedList'],
+                        ['undo', 'redo'],
+                    ])
+                    ->hidden(fn (?Page $record): bool => $record?->isHomepage() ?? true),
             ]);
     }
 }

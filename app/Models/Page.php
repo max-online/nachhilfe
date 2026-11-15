@@ -22,6 +22,14 @@ class Page extends Model
     }
 
     /**
+     * Determine whether this page is the homepage, which has its own structured content.
+     */
+    public function isHomepage(): bool
+    {
+        return $this->slug === 'home';
+    }
+
+    /**
      * Turn a display phone number like "0202 – 59 07 55" into a dialable "tel:" value.
      */
     public static function phoneLink(string $phone): string

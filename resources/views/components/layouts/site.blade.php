@@ -39,9 +39,21 @@
         .dark-card{background:oklch(0.27 0.08 262);color:#fff;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:12px}
         .dark-card h3{margin:0;font-size:22px;font-weight:800}
         .dark-card p{margin:0;font-size:16px;line-height:1.6;color:oklch(0.88 0.03 262);text-wrap:pretty}
+        .slider{position:relative;border-radius:14px;overflow:hidden;background:oklch(0.92 0.012 262)}
+        .slider-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none}
+        .slider-track::-webkit-scrollbar{display:none}
+        .slider-track img{flex:0 0 100%;width:100%;height:auto;aspect-ratio:16/9;display:block;scroll-snap-align:start}
+        .slider-btn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,0.9);color:oklch(0.27 0.08 262);font-size:22px;font-weight:700;line-height:1;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center}
+        .slider-btn:hover{background:#fff}
+        .slider-btn:focus-visible,.slider-dot:focus-visible{outline:2px solid oklch(0.5 0.17 262);outline-offset:2px}
+        .slider-btn.prev{left:12px}
+        .slider-btn.next{right:12px}
+        .slider-dots{position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:center;gap:8px}
+        .slider-dot{width:10px;height:10px;padding:0;border-radius:50%;border:none;background:rgba(255,255,255,0.55);cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.25)}
+        .slider-dot[aria-current="true"]{background:#fff}
         .contact-label{font-size:13px;color:oklch(0.75 0.04 262)}
         .legal{max-width:760px;margin:0 auto;padding:72px 24px 96px;font-size:17px;line-height:1.65;color:oklch(0.35 0.03 262);overflow-wrap:break-word}
-        .legal h1{margin:0 0 32px;font-weight:800;font-size:clamp(32px,4vw,44px);line-height:1.1;letter-spacing:-0.025em;color:oklch(0.24 0.05 262)}
+        .legal h1{margin:0 0 32px;hyphens:auto;font-weight:800;font-size:clamp(32px,4vw,44px);line-height:1.1;letter-spacing:-0.025em;color:oklch(0.24 0.05 262)}
         .legal h2{margin:48px 0 12px;font-size:24px;font-weight:800;letter-spacing:-0.015em;color:oklch(0.24 0.05 262)}
         .legal h3{margin:32px 0 8px;font-size:19px;font-weight:700;color:oklch(0.24 0.05 262)}
         .legal h4{margin:24px 0 6px;font-size:17px;font-weight:700;color:oklch(0.24 0.05 262)}
@@ -72,6 +84,7 @@
                 <a href="{{ route('home') }}#angebot" style="color:oklch(0.3 0.05 262)">Angebot</a>
                 <a href="{{ route('home') }}#kurse" style="color:oklch(0.3 0.05 262)">Kursmodelle</a>
                 <a href="{{ route('home') }}#ansatz" style="color:oklch(0.3 0.05 262)">Unser Ansatz</a>
+                <a href="{{ route('home') }}#ueber-uns" style="color:oklch(0.3 0.05 262)">Über uns</a>
                 <a href="{{ route('home') }}#kontakt" style="color:oklch(0.3 0.05 262)">Kontakt</a>
             </nav>
             <a href="tel:+49202590755" class="btn-dark" style="padding:11px 20px;font-size:15px">0202 – 59 07 55</a>

@@ -2,6 +2,13 @@
     $content = $page->content;
     $colors = ['oklch(0.85 0.16 92)', 'oklch(0.5 0.17 262)', 'oklch(0.55 0.15 150)', 'oklch(0.58 0.2 25)'];
     $phoneLink = 'tel:'.\App\Models\Page::phoneLink($content['contact']['phone']);
+    $aboutImages = [
+        ['src' => 'images/institut/institut-1.jpg', 'alt' => 'Unterrichtsraum mit großem Tisch und Fensterfront'],
+        ['src' => 'images/institut/institut-2.jpg', 'alt' => 'Heller Unterrichtsraum mit Tischgruppe und Tafel'],
+        ['src' => 'images/institut/institut-3.jpg', 'alt' => 'Eingangsbereich mit Büro und Pinnwand'],
+        ['src' => 'images/institut/institut-4.jpg', 'alt' => 'Langer Unterrichtsraum mit Tafel und Fenstern'],
+        ['src' => 'images/institut/institut-5.jpg', 'alt' => 'Materialraum mit Regalen voller Bücher und Lernmaterial'],
+    ];
 @endphp
 <x-layouts.site>
     <section id="top" style="background:oklch(0.27 0.08 262);color:#fff">
@@ -9,6 +16,8 @@
             <div style="display:flex;flex-direction:column;gap:28px">
                 <span class="eyebrow" style="align-self:flex-start;color:oklch(0.85 0.16 92)">{{ $content['hero']['eyebrow'] }}</span>
                 <h1 style="margin:0;font-weight:800;font-size:clamp(42px,5.6vw,68px);line-height:1.04;letter-spacing:-0.03em;text-wrap:balance">{{ $content['hero']['title'] }}</h1>
+                <img src="{{ asset('images/willkommen-wolke.png') }}" alt="Willkommen in vielen Sprachen: Welcome, Bienvenue, Benvenuto, Bienvenido, Hoş geldiniz, خوش آمدی, ласкаво просимо, اهلا وسهلا" width="1100" height="617" style="display:block;width:100%;max-width:440px;height:auto;margin:-8px 0 -12px 16px">
+
                 <p style="margin:0;font-size:19px;line-height:1.6;max-width:520px;color:oklch(0.88 0.03 262);text-wrap:pretty">{{ $content['hero']['text'] }}</p>
                 <div style="display:flex;gap:12px;flex-wrap:wrap">
                     <a href="#kontakt" class="btn-light">{{ $content['hero']['cta'] }}</a>
@@ -99,20 +108,55 @@
         </div>
     </section>
 
-    <section class="wrap" style="padding:0 24px 96px">
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:48px;align-items:center;background:oklch(0.975 0.006 262);border-radius:20px;padding:clamp(28px,5vw,56px)">
-            <div style="aspect-ratio:4/3;border-radius:14px;background:repeating-linear-gradient(135deg,oklch(0.94 0.01 262) 0 12px,oklch(0.92 0.012 262) 12px 24px);display:flex;align-items:center;justify-content:center">
-                <span class="mono" style="color:oklch(0.55 0.03 262)">Foto: Team / Räume Bachstraße</span>
+    <section id="ueber-uns" class="wrap" style="padding:0 24px 96px;scroll-margin-top:96px">
+        <div style="display:flex;flex-direction:column;gap:40px;background:oklch(0.975 0.006 262);border-radius:20px;padding:clamp(28px,5vw,56px)">
+            <div style="display:flex;flex-direction:column;gap:14px;max-width:680px">
+                <span class="eyebrow">{{ $content['about']['eyebrow'] ?? 'Über uns' }}</span>
+                <h2 class="h2">{{ $content['about']['title'] ?? 'Seit 1990 Ihr Partner für Nachhilfe in Barmen.' }}</h2>
             </div>
-            <div style="display:flex;flex-direction:column;gap:20px">
-                <span style="font-weight:800;font-size:clamp(56px,7vw,88px);line-height:1;letter-spacing:-0.04em;color:oklch(0.27 0.08 262)">{{ $content['about']['highlight'] }}</span>
-                <p style="margin:0;font-size:19px;line-height:1.6;text-wrap:pretty">{{ $content['about']['text'] }}</p>
-                @if (filled($content['about']['owner'] ?? null))
-                    <p style="margin:0;font-size:15px;color:oklch(0.5 0.03 262)">{{ $content['about']['owner'] }}</p>
-                @endif
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:48px;align-items:center">
+                <div class="slider" data-slider role="region" aria-roledescription="carousel" aria-label="Unsere Räume in der Bachstraße">
+                    <div class="slider-track" data-slider-track>
+                        @foreach ($aboutImages as $image)
+                            <img src="{{ asset($image['src']) }}" alt="{{ $image['alt'] }}" width="1600" height="900" @if (! $loop->first) loading="lazy" @endif>
+                        @endforeach
+                    </div>
+                    <button type="button" class="slider-btn prev" data-slider-prev aria-label="Vorheriges Bild">‹</button>
+                    <button type="button" class="slider-btn next" data-slider-next aria-label="Nächstes Bild">›</button>
+                    <div class="slider-dots">
+                        @foreach ($aboutImages as $image)
+                            <button type="button" class="slider-dot" data-slider-dot aria-label="Bild {{ $loop->iteration }} von {{ count($aboutImages) }}" @if ($loop->first) aria-current="true" @endif></button>
+                        @endforeach
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:20px">
+                    <p style="margin:0;font-size:19px;line-height:1.6;text-wrap:pretty">{{ $content['about']['text'] }}</p>
+                    @if (filled($content['about']['owner'] ?? null))
+                        <p style="margin:0;font-size:15px;color:oklch(0.5 0.03 262)">{{ $content['about']['owner'] }}</p>
+                    @endif
+                </div>
             </div>
         </div>
     </section>
+
+    <script>
+        document.querySelectorAll('[data-slider]').forEach((slider) => {
+            const track = slider.querySelector('[data-slider-track]');
+            const dots = [...slider.querySelectorAll('[data-slider-dot]')];
+            const count = dots.length;
+            const currentIndex = () => Math.round(track.scrollLeft / track.clientWidth);
+            const goTo = (index) => track.scrollTo({ left: ((index + count) % count) * track.clientWidth });
+
+            slider.querySelector('[data-slider-prev]').addEventListener('click', () => goTo(currentIndex() - 1));
+            slider.querySelector('[data-slider-next]').addEventListener('click', () => goTo(currentIndex() + 1));
+            dots.forEach((dot, index) => dot.addEventListener('click', () => goTo(index)));
+
+            track.addEventListener('scroll', () => {
+                const active = currentIndex();
+                dots.forEach((dot, index) => dot.setAttribute('aria-current', index === active ? 'true' : 'false'));
+            }, { passive: true });
+        });
+    </script>
 
     <section id="kontakt" style="background:oklch(0.27 0.08 262);color:#fff">
         <div class="wrap" style="padding:96px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:56px">
@@ -122,7 +166,10 @@
                 <div style="display:flex;flex-direction:column;gap:18px;margin-top:8px;font-size:17px">
                     <div style="display:flex;flex-direction:column;gap:4px"><span class="contact-label">Telefon</span><a href="{{ $phoneLink }}" style="color:#fff;font-weight:700;font-size:24px">{{ $content['contact']['phone'] }}</a></div>
                     <div style="display:flex;flex-direction:column;gap:4px"><span class="contact-label">E-Mail</span><a href="mailto:{{ $content['contact']['email'] }}" style="color:#fff;font-weight:600">{{ $content['contact']['email'] }}</a></div>
-                    <div style="display:flex;flex-direction:column;gap:4px"><span class="contact-label">Adresse</span><span style="font-weight:600">{{ $content['contact']['address'] }}</span></div>
+                    <div style="display:flex;flex-direction:column;gap:4px"><span class="contact-label">Adresse</span><a href="https://maps.google.com/?cid=3418569725803461514" target="_blank" rel="noopener" style="color:#fff;font-weight:600">{{ $content['contact']['address'] }}</a></div>
+                </div>
+                <div style="margin-top:16px;width:clamp(160px,20vw,220px);aspect-ratio:1;border-radius:50%;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center">
+                    <img src="{{ asset('images/logo.jpeg') }}" alt="Lehrerkreis Logo" style="width:70%;height:auto;display:block">
                 </div>
             </div>
             <div style="background:#fff;color:oklch(0.24 0.05 262);border-radius:18px;padding:clamp(24px,4vw,40px)">
